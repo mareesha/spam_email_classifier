@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Detector</title>
+</head>
+<body>
+
+    <h2>Spam Detection System</h2>
+
+    <input type="text" id="message" placeholder="Enter message" size="50">
+    <button onclick="checkSpam()">Check</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        function checkSpam() {
+            let message = document.getElementById("message").value;
+
+            fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML =
+                    "Prediction: " + data.prediction +
+                    " | Confidence: " + data.confidence + "%";
+            });
+        }
+    </script>
+
+</body>
+</html>
